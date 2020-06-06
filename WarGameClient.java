@@ -25,6 +25,6 @@ public class WarGameClient {//handle connection and use rmi function here from c
 			System.out.println("NotBoundException: "+nbe);
 		}catch(java.lang.ArithmeticException ae) {
 			System.out.println("java.lang.ArithmeticException: "+ae);
-//		}
+		}
 	}
 }
