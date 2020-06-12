@@ -99,20 +99,23 @@ class WarGameBoard extends JPanel{
 	}
 }
 public class WarGameGUI extends JFrame implements ActionListener{
-
 	JTextArea ta_msgView;
 	JScrollPane scPane;
-	JTextField tf_Send=new JTextField("");
-	JTextField tf_Name=new JTextField();
-	JTextField tf_IPAddress=new JTextField();
+//	JTextField tf_Send=new JTextField("");
+//	JTextField tf_Name=new JTextField();
+//	JTextField tf_IPAddress=new JTextField();
 	DefaultListModel model=new DefaultListModel();
 	JList li_Player=new JList(model);
-	JButton connectBtn=new JButton("connect");
+	
+//	JButton connectBtn=new JButton("connect");
 	JButton readyBtn=new JButton("ready");
 	JLabel la_GameInfo=new JLabel("<information>");
 	JLabel la_playerInfo=new JLabel("<participants>");
-	boolean ready=false;
-
+//	boolean ready=false;
+	boolean boolean_ReadyBtn;
+	boolean boolean_HitBtn;
+	boolean boolean_DropBtn;
+	private String id;
 	WarGameBoard board=new WarGameBoard();
 	BufferedReader reader;
 	PrintWriter writer;
@@ -123,15 +126,18 @@ public class WarGameGUI extends JFrame implements ActionListener{
 	JButton dropBtn=new JButton();
 
 
-	public WarGameGUI() {
+	public WarGameGUI(String id) {
 		super("War Game");
 //		WarGameClient client=new WarGameClient();
-		
+		this.id=id;
+		boolean_ReadyBtn=false;
+		boolean_HitBtn=false;
+		boolean_DropBtn=false;
 		//it was in main() at first.but need to change to use rmi...
 		Container ct=getContentPane();
 		ct.setLayout(null);
 
-
+		model=(DefaultListModel)li_Player.getModel();
 		hitBtn=new JButton();
 		hitBtn.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         hitBtn.setText("Hit");
@@ -164,17 +170,18 @@ public class WarGameGUI extends JFrame implements ActionListener{
 
 
 		JPanel connectPanel=new JPanel();
-		connectPanel.setLayout(new GridLayout(4,4));
-		connectPanel.add(new Label("IP Address: ",2));
-		connectPanel.add(tf_IPAddress);
-		connectPanel.add(new Label("name : ",2));
-		connectPanel.add(tf_Name);
-		connectPanel.add(connectBtn);
+		connectPanel.setLayout(new GridLayout(1,1));
+//		connectPanel.add(new Label("IP Address: ",2));
+//		connectPanel.add(tf_IPAddress);
+//		connectPanel.add(new Label("name : ",2));
+//		connectPanel.add(tf_Name);
+//		connectPanel.add(connectBtn)
+		readyBtn.setFont(new java.awt.Font("Lucida Grande", 0, 24));;
 		connectPanel.add(readyBtn);
-		readyBtn.setEnabled(false);
+//		readyBtn.setEnabled(false);
 		connectPanel.setBounds(620,50,250,70);
 		ct.add(connectPanel);
-		connectBtn.addActionListener(this);
+//		connectBtn.addActionListener(this);
 		readyBtn.addActionListener(this);
 
 		JPanel participantsPanel=new JPanel();
@@ -187,40 +194,83 @@ public class WarGameGUI extends JFrame implements ActionListener{
 		JPanel infoPanel=new JPanel();
 		infoPanel.setLayout(new BorderLayout());
 		infoPanel.add(scPane,"Center");
-		infoPanel.add(tf_Send,"South");
+//		infoPanel.add(tf_Send,"South");
 		infoPanel.setBounds(620,360,250,200);
 		ct.add(infoPanel);
-		tf_Send.addActionListener(this);
-		ta_msgView.append("input name and press connect");
+//		tf_Send.addActionListener(this);
+		ta_msgView.append("press ready to play game\n");
 		
 		this.setSize(880,650);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
+	public String returnID() {
+		return id;
+	}
+	public boolean returnReadyBtnStatus() {
+		return boolean_ReadyBtn;
+	}
+	public boolean returnHitBtnStatus() {
+		return boolean_HitBtn;
+	}
+	public void setHitStatusFalse() {
+		boolean_HitBtn=false;
+	}
+	public void setDropStatusFalse() {
+		boolean_DropBtn=false;
+	}
+	public boolean returnDropBtnStatus() {
+		return boolean_DropBtn;
+	}
+	public void setGameInfo(String str) {//상단에 <information> 부분으로 누구 차례인지, 뭘 해야 하는지 등을 알려줌 
+		la_GameInfo.setText("<information> "+str);
+	}
+	public void setMsgView(String str) {//행동의 결과를 알려줌. hit를 했다, drop을 했다등 
+		ta_msgView.append(str+"\n");
+	}
+	public void setPlayerList(String str) {//참가자 리스트를 보여줌
+		model.addElement(str);
+	}
+	public void deactivateReadyBtn() {
+		readyBtn.setEnabled(false);
+	}
     public void actionPerformed(ActionEvent ae) {
     	try {
 	    	if(ae.getSource()==dropBtn) {
-	    		System.out.println("drop");
+//	    		System.out.println("drop");
+	    		boolean_DropBtn=true;
+	    		
+	    		
 	    	}
 	    	else if(ae.getSource()==hitBtn) {
 	    		System.out.println("hit");
 	    	}
-	    	else if(ae.getSource()==tf_Send) {
-	    		String msg=tf_Send.getText();
-	    		if(msg.length()==0)
-	    			return ;
-	    		if(msg.length()>=30) {
-	    			msg=msg.substring(0,30);
+//	    	else if(ae.getSource()==tf_Send) {
+//	    		String msg=tf_Send.getText();
+//	    		if(msg.length()==0)
+//	    			return ;
+//	    		if(msg.length()>=30) {
+//	    			msg=msg.substring(0,30);
+//	    		}
+////	    		writer.println("[MSG]: ",msg);
+//	    		System.out.println("[MSG]:"+ msg);
+//	    		tf_Send.setText("");
+//	    	}
+//	    	else if(ae.getSource()==connectBtn) {
+//	    		System.out.println("[Connect]: button");
+//	    	}
+    		else if(ae.getSource()==readyBtn) {
+//	    		System.out.println("[Ready]: button");
+	    		if(boolean_ReadyBtn==false) {
+	    			boolean_ReadyBtn=true;
+	    			readyBtn.setText("not ready");//레디 박은 상
+	    			System.out.println(boolean_ReadyBtn);
 	    		}
-//	    		writer.println("[MSG]: ",msg);
-	    		System.out.println("[MSG]:"+ msg);
-	    		tf_Send.setText("");
-	    	}
-	    	else if(ae.getSource()==connectBtn) {
-	    		System.out.println("[Connect]: button");
-	    	}else if(ae.getSource()==readyBtn) {
-	    		System.out.println("[Ready]: button");
+	    		else {
+	    			boolean_ReadyBtn=false;
+	    			readyBtn.setText("ready");//레디 안했을 경우 
+	    			System.out.println(boolean_ReadyBtn);
+	    		}
 	    	}
 
     	}catch(Exception e) {
