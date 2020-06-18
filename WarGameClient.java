@@ -16,7 +16,7 @@ import java.rmi.NotBoundException;
 
 public class WarGameClient implements Runnable {//handle connection and use rmi function here from client side
 //	private static final long serialVersionUID = 1L;
-	private static final int PORT = 2019;
+	private static final int PORT = 2020;
 	
 	private String id;
 	boolean chkLog=false;
@@ -110,7 +110,33 @@ public class WarGameClient implements Runnable {//handle connection and use rmi 
 //			}
 			try {
 				while(server.checkEndingStatus()){//게임중... 
+					if(!server.checkEndingStatus()) {
+						System.out.println("끝남ㅎㅎ");
+						server.refreshDeck(server.whosWin());
+						gui.deactivatedHitDropBtn();
+						gui.setCardNumLabel(0, server.getDeckLength(0));
+						gui.setCardNumLabel(1, server.getDeckLength(1));
+						gui.getMessageBox(client.get(server.whosWin()-1));
+						
+					}
+					
+					gui.setCardNumLabel(0, server.getDeckLength(0));
+					gui.setCardNumLabel(1, server.getDeckLength(1));
 					while(id.equals(server.whosTurn())){//자신의 턴 동안...
+						int num = -1;
+						for(int i = 0 ; i < client.size(); i++) {
+							if(id.equals(client.get(i))) {
+								num = i;
+								break;
+							}
+						}
+						if(server.getDeckLength(num) == 0 || server.getDeckLength(num) == 52) {
+							break;
+						}
+						
+						gui.setCardNumLabel(0, server.getDeckLength(0));
+						gui.setCardNumLabel(1, server.getDeckLength(1));
+						
 						boolean_DropBtnStatus=gui.returnDropBtnStatus();
 						boolean_HitBtnStatus=gui.returnHitBtnStatus();
 						if(boolean_DropBtnStatus) {
@@ -119,13 +145,11 @@ public class WarGameClient implements Runnable {//handle connection and use rmi 
 //							server.doDrop(id);//id는 안쓰고, serverImpl에서 turn보고 알아서 판단하고 있음. 필요 없는거 확실해지면 그때 지우기.
 							gui.setDropStatusFalse();//버튼 눌리면 true로 변하기 때문에 변경 안하면 항상 true인 효과 한번 버튼 누르면 다시 false로 변환 
 							//server.changeTurn();
-							gui.repaint();
+//							gui.repaint();
 						}else if(boolean_HitBtnStatus) {
 							hit();
 //							server.doHit(id);
 							gui.setHitStatusFalse();
-
-						}else {
 
 						}
 					}
@@ -138,14 +162,22 @@ public class WarGameClient implements Runnable {//handle connection and use rmi 
 							gui.setDropStatusFalse();
 						}
 						if(boolean_HitBtnStatus){
-							System.out.println("it's not your turn..please wait");
-							gui.setGameInfo("it's not your turn..please wait");
+//							System.out.println("it's not your turn..please wait");
+//							gui.setGameInfo("it's not your turn..please wait");
+							hit();
 							gui.setHitStatusFalse();
 						}
 					}
+					
 				}
 				
-//				gui.deactivatedHitDropBtn();
+				
+				server.refreshDeck(server.whosWin());
+				gui.setCardNumLabel(0, server.getDeckLength(0));
+				gui.setCardNumLabel(1, server.getDeckLength(1));
+				gui.deactivatedHitDropBtn();
+				gui.getMessageBox(client.get(server.whosWin()-1));
+				
 			
 			}catch(Exception e) {//디테일하게 예외 잡아 줘야 할 듯..예외처리 사이즈가 커
 				e.printStackTrace();
@@ -210,4 +242,3 @@ public class WarGameClient implements Runnable {//handle connection and use rmi 
 	}
 
 }
-

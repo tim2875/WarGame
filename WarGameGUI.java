@@ -97,6 +97,11 @@ class WarGameBoard extends JPanel{
 		super.paintComponent(g);
 		playerCard.paintIcon(this,g,200,50);
 	}
+	void setCardNumLabel(int p,int num) {
+		cardNumLabel[p].setText(""+num);
+		
+	}
+	
 }
 public class WarGameGUI extends JFrame implements ActionListener{
 	JTextArea ta_msgView;
@@ -204,6 +209,12 @@ public class WarGameGUI extends JFrame implements ActionListener{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	
+		
+		//playerLabel[0],[1]
+	public void setCardNumLabel(int p,int num) {
+		board.setCardNumLabel(p, num);
+	}
 	public String returnID() {
 		return id;
 	}
@@ -242,6 +253,10 @@ public class WarGameGUI extends JFrame implements ActionListener{
 		hitBtn.setEnabled(true);
 		dropBtn.setEnabled(true);
 	}
+	public void getMessageBox(String Gid) {
+			JOptionPane.showMessageDialog(null, Gid+"가 승리하였습니다.");
+	}
+	
 	
     public void actionPerformed(ActionEvent ae) {
     	try {
