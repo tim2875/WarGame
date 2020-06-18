@@ -234,16 +234,24 @@ public class WarGameGUI extends JFrame implements ActionListener{
 	public void deactivateReadyBtn() {
 		readyBtn.setEnabled(false);
 	}
+	public void deactivatedHitDropBtn() {
+		hitBtn.setEnabled(false);
+		dropBtn.setEnabled(false);
+	}
+	public void activatedHitDropBtn() {
+		hitBtn.setEnabled(true);
+		dropBtn.setEnabled(true);
+	}
+	
     public void actionPerformed(ActionEvent ae) {
     	try {
 	    	if(ae.getSource()==dropBtn) {
 //	    		System.out.println("drop");
 	    		boolean_DropBtn=true;
-	    		
-	    		
 	    	}
 	    	else if(ae.getSource()==hitBtn) {
-	    		System.out.println("hit");
+	    		boolean_HitBtn=true;
+//	    		System.out.println("hit");
 	    	}
 //	    	else if(ae.getSource()==tf_Send) {
 //	    		String msg=tf_Send.getText();
