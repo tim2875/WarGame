@@ -10,7 +10,7 @@ public class Cards {
 	ArrayList<Card> cards;
 	public Cards() {
 		this.cards=new ArrayList<Card>();
-		for(int i=2;i<=10;i++) {
+		for(int i=2;i<=10;i++) {		// 52 cards
 			cards.add(new Card(i,"S"));
 			cards.add(new Card(i,"H"));
 			cards.add(new Card(i,"D"));
@@ -48,13 +48,9 @@ public class Cards {
 	}
 	
 	void show() {
-		
 		Iterator iter=cards.iterator();
 		while(iter.hasNext()) {
 			System.out.println(iter.next());
-			
 		}
-		
-		
 	}
 }
