@@ -20,6 +20,15 @@ import java.util.ArrayList;
 	 String receiveMsg() throws RemoteException;//client입장에서 서버로부터 메지시를 받는 역할을 한다.
 	 ArrayList<String> getClientList() throws RemoteException;
 	 int getDeckLength(int player) throws RemoteException;
-	 int whosWin() throws RemoteException;
-	 void refreshDeck(int who) throws RemoteException;
+	 String getTopType() throws RemoteException;
+	 String getTopValue() throws RemoteException;
+	 boolean getDeckZeroStatus() throws RemoteException;
+	 public void refreshDeck(int who) throws RemoteException;
+	 public int whosWin() throws RemoteException;
+//	 public int getDeckSize() throws RemoteException;
+	 public void modifyBtnStatus(int whichBtn, String id) throws RemoteException;
+	 public boolean checkBtnStatus(int whichBtn, String id) throws RemoteException;
+	 public void modifyAnotherBtnStatus(int whichBtn, String id) throws RemoteException;
+	 public String findAnotherId(String id) throws RemoteException;
+	 
 }

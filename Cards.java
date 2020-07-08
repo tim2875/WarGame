@@ -36,7 +36,7 @@ public class Cards {
 		cards.add(new Card("A","H"));
 		cards.add(new Card("A","D"));
 		cards.add(new Card("A","C"));
-//		Collections.shuffle(cards);
+		Collections.shuffle(cards);
 	}
 	Card pop() {
 		Card c=cards.get(0);
